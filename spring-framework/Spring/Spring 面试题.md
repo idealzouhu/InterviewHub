@@ -482,3 +482,16 @@ Spring Boot 自动装配是 Spring Boot 的核心功能之一，旨在简化应�
 
 <br>
 
+
+
+## 六、Spring Security
+
+### 6.1 Spring Security 的原理
+
+**认证：** 通过用户名和密码或其他方式验证用户身份，Spring Security 会将用户信息存储在 `SecurityContext` 中。
+
+**授权：** 根据用户的角色和权限判断是否允许访问某些资源。
+
+**过滤器链：** Spring Security 的核心是过滤器链，所有的安全控制都通过各个过滤器按顺序执行。
+
+**会话管理和 CSRF 防护：** 支持会话管理，防止 CSRF 攻击，保护用户的安全。
