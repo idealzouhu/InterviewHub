@@ -1,14 +1,10 @@
 ## 数据类型
 
-
-
-
-
 ### String 的 length() 函数
 
 在 Java 中，字符串是由 `char` 类型的字符组成的，每个 `char` 占 2 个字节（16 位），表示一个 Unicode 字符。中文字符通常使用多个字节表示，但在 Java 字符串中，**每个中文字符仍然算作一个 `char`**。
 
-字符串的 `length()` 方法返回的是字符串中 字符的数量，而不是字节数。
+字符串的 `length()` 方法返回的是字符串中字符的数量，而不是字节数。
 
 执行以下代码：
 
@@ -41,10 +37,6 @@ String str2 = new String(chars1);
 // 使用 equals() 比较内容
 System.out.println(str1.equals(str2));  // 输出: true
 ```
-
-
-
-
 
 
 
@@ -169,8 +161,6 @@ class InnerClassTest2 {
 
 
 ## 基础语法
-
-
 
 ### switch 语句的 fall-through行为
 
@@ -299,7 +289,7 @@ C、全局区
 
 D、代码区
 
-**正确答案**：A
+**正确答案**：C
 
 **答案解析**：
 
@@ -309,7 +299,7 @@ D、代码区
 
 [牛客网 - 找工作神器|笔试题库|面试经验|实习招聘内推，求职就业一站解决_牛客网](https://www.nowcoder.com/exam/test/85086972/submission?pid=133)
 
-
+![img](images/105_1411203462041_4.png)
 
 
 
