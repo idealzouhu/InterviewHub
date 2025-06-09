@@ -1,4 +1,60 @@
-## 一、数据类型
+## 一、基本概念
+
+
+
+### 列举一下常见的异常
+
+异常分为三大类：
+
+- **已检查异常（Checked Exceptions）**：
+  - 这些异常是编译时异常，必须要么被捕获要么被声明。编译器在在编译阶段会进行检查。
+  - 这些是编写良好的应用程序应该预见并从中恢复的异常条件。
+  - 例如：`FileNotFoundException`、`IOException`, `SQLException`。
+- **未检查异常（Unchecked Exceptions）**：
+  - 这些异常是运行时异常，继承自[`RuntimeException`](https://docs.oracle.com/en/java/javase/22/docs/api/java.base/java/lang/RuntimeException.html) 。未检查异常存在[争议](https://dev.java/learn/exceptions/unchecked-exception-controversy/)
+  - 这些异常是应用程序内部的异常情况，应用程序通常无法预测或恢复。这些通常表明编程错误，如逻辑错误或 API 使用不当。
+  - 例如：`NullPointerException`, `ArrayIndexOutOfBoundsException`。
+- **错误（Errors）**：
+  - 这些是由 JVM 引发的严重错误，继承自`Error`。
+  - 这些是应用程序外部的异常情况，应用程序通常无法预测或从中恢复。
+  - 例如：`OutOfMemoryError`, `StackOverflowError`。
+
+其中，<font color="red">**未检查异常（Unchecked Exceptions） 和错误（Errors）不需要遵循捕获或指定异常的要求**</font>。也就是说，针对这两种异常，我们可以不用编写异常处理程序进行处理。
+
+注意：编译时异常是指编译器在编译阶段进行检查的异常类型，但这些异常实际上是在程序运行时可能会发生的。例如，`FileNotFoundException` 是编译时异常，如果指定的文件在运行时不存在，则会抛出这个异常。
+
+![throwable-hierarchy](images/throwable-hierarchy-1742291733198.png)
+
+
+
+
+
+### 字节流和字符流操作的区别
+
+ Java IO 用于处理数据的读取和写入。Java 提供了一整套类库和 API 来执行 I/O 操作，这些类位于 `java.io` 和 `java.nio` 包中，分别用于处理基本的 I/O 和更高级的非阻塞 I/O。
+
+Java IO 主要区分为字节流操作和字符流操作，
+
+- **字节流操作**：`InputStream` 和 `OutputStream` 为所有字节流的基类。字节流用于处理二进制数据（如图片、音频等），操作单个字节。
+- **字符流操作**：`Reader` 和 `Writer` 为所有字符流的基类。字符流用于处理文本数据，操作字符或字符串，支持 Unicode 字符。
+
+字节流和字符流的具体区别如下：
+
+| 特性           | 字节流 (Byte Stream)                                         | 字符流 (Character Stream)                           |
+| -------------- | ------------------------------------------------------------ | --------------------------------------------------- |
+| 数据单位       | 字节 (8 位)                                                  | 字符 (16 位)                                        |
+| 处理的数据类型 | 二进制数据，如图片、音频、视频等                             | 文本数据，如 `String`、`char`                       |
+| 编码/解码      | 不进行字符编码或解码，可能出现乱码问题                       | <font color="red">**自动进行字符编码与解码**</font> |
+| 适用场景       | 处理非文本文件，如图片、音频等                               | 处理文本文件，如 `.txt`、HTML、XML                  |
+| 常用类         | `InputStream`, `OutputStream`                                | `Reader`, `Writer`                                  |
+| 常用子类       | `FileInputStream`, `BufferedInputStream`；`DataOutputStream` | `FileReader`, `BufferedReader`                      |
+
+Java **区分字节流和字符流操作的具体原因**为：
+
+- 在不知道字符编码类型的情况下，字节流可能出现乱码问题。
+- 字符流比字节流性能稍低，因为字符流需要通过 JVM 进行字符编码/解码转换
+
+
 
 
 
@@ -249,6 +305,27 @@ null 具备二义性：
 - ConcurrentHashMap 则使用 `Node + CAS + synchronized` 保证线程安全，锁的粒度降到来 Node。
 
 
+
+### 2.3 其他
+
+#### compare() 方法的使用原理
+
+[`Comparator`](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Comparator.html) 接口的 `compare` 方法是定义自定义排序逻辑的核心。它的作用是比较两个对象，并根据比较结果返回一个整数值。
+
+```
+@FunctionalInterface
+public interface Comparator<T> {
+	 int compare(T o1, T o2);
+}
+```
+
+根据 compare()  的返回值，对象排序如下：
+
+- 正整数： `o1` 会排在 `o2` 的后面，即 `[ o2, o1 ]`， 升序排列
+- **零**：`o1` 和 `o2` 被认为是相等的，排序中它们的相对位置不变， 即 `[ o1, o2 ]`。
+- **负整数**：在排序中，`o1` 会排在 `o2` 的前面,  即 `[ o1, o2 ]`， 降序排列
+
+实际上，当 `compare(o1, o2) <= 0` 时，都不交换位置。另外，一般而言，<font color="red">**集合都默认升序排列**</font>。
 
 
 
@@ -618,7 +695,7 @@ G1 (Garbage-First) 是一款面向服务器的垃圾收集器,主要针对配备
 
 - **避免类的重复加载** ：双亲委派模型可以避免同一个类被多个类加载器重复加载，从而避免了类冲突的问题。当父加载器已经加载了某个类时，子加载器就不会再次加载，而是直接使用父加载器加载的版本。
 
-- **保证核心类库的一致性：** Java核心类库由启动类加载器加载，因此不会被应用程序类加载器替换，保证了核心类库的一致性和稳定性。
+- **保证核心类库的一致性**： Java核心类库由启动类加载器加载，因此不会被应用程序类加载器替换，保证了核心类库的一致性和稳定性。
 
 
 
