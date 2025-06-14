@@ -245,6 +245,14 @@ SQL 片段标签用于定义和重用 SQL 片段，避免代码重复。
 
 
 
+
+
+### sqlSession 是否线程安全
+
+在 **MyBatis** 中，`SqlSession` **不是线程安全的**。每个 `SqlSession` 实例都应该在单个线程中使用，并在使用完毕后正确关闭，以避免并发问题。
+
+
+
 ### 参考资料
 
 [MyBatis 常见面试题37道-包含答案_mybatis面试-CSDN博客](https://blog.csdn.net/Wyxl990/article/details/136049772)
